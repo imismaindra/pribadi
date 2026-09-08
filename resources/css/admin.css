@@ -1,0 +1,502 @@
+:root {
+    --admin-bg: #f3f5f6;
+    --admin-surface: #ffffff;
+    --admin-text: #11161a;
+    --admin-muted: #69747c;
+    --admin-line: #d7dde1;
+    --admin-accent: #557888;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--admin-bg);
+    color: var(--admin-text);
+    font-family: "DM Sans", sans-serif;
+}
+
+.admin-container {
+    min-height: 100vh;
+    padding: 60px 24px;
+}
+
+.admin-page {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+}
+
+.admin-eyebrow,
+.admin-label {
+    font-family: "DM Mono", monospace;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    color: var(--admin-muted);
+}
+
+.admin-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 55px;
+}
+
+.admin-header h1 {
+    margin: 18px 0 0;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: .95;
+    letter-spacing: -.055em;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.admin-card {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-line);
+    padding: 30px;
+}
+
+.admin-stat {
+    margin-top: 18px;
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: -.05em;
+}
+
+.admin-project-management {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.admin-project-management h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    letter-spacing: -.03em;
+}
+
+.admin-project-management p {
+    margin: 8px 0 0;
+    color: var(--admin-muted);
+}
+
+.admin-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 20px;
+    border: 1px solid var(--admin-line);
+    text-decoration: none;
+    font: inherit;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.admin-button-primary {
+    background: var(--admin-text);
+    color: white;
+    border-color: var(--admin-text);
+}
+
+.admin-button-primary:hover {
+    opacity: .85;
+}
+
+.admin-button-secondary {
+    background: transparent;
+    color: var(--admin-text);
+}
+
+.admin-button-secondary:hover {
+    background: var(--admin-surface);
+}
+
+
+@media (max-width: 700px) {
+
+    .admin-container {
+        padding: 30px 16px;
+    }
+
+    .admin-header {
+        display: block;
+        margin-bottom: 35px;
+    }
+
+    .admin-header form {
+        margin-top: 20px;
+    }
+
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-project-management {
+        display: block;
+    }
+
+    .admin-project-management .admin-button {
+        margin-top: 25px;
+        width: 100%;
+    }
+}
+/* ========================================
+   PROJECT MANAGEMENT
+======================================== */
+
+.admin-page-description {
+    margin: 12px 0 0;
+    color: var(--admin-muted);
+    font-size: .95rem;
+}
+
+.admin-alert {
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--admin-line);
+    font-size: .9rem;
+}
+
+.admin-alert-success {
+    background: var(--admin-surface);
+    color: var(--admin-text);
+}
+
+.admin-project-list {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-line);
+}
+
+.admin-project-item {
+    display: grid;
+    grid-template-columns: 150px 1fr auto;
+    align-items: center;
+    gap: 25px;
+    padding: 22px;
+    border-bottom: 1px solid var(--admin-line);
+}
+
+.admin-project-item:last-child {
+    border-bottom: 0;
+}
+
+.admin-project-thumbnail {
+    width: 150px;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-line);
+}
+
+.admin-project-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.admin-no-image {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+
+    font-family: "DM Mono", monospace;
+    font-size: .65rem;
+    color: var(--admin-muted);
+}
+
+.admin-project-info {
+    min-width: 0;
+}
+
+.admin-project-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-project-title h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -.025em;
+}
+
+.admin-project-meta {
+    margin-top: 7px;
+    color: var(--admin-muted);
+    font-size: .85rem;
+}
+
+.admin-project-tech {
+    margin-top: 9px;
+
+    font-family: "DM Mono", monospace;
+    font-size: .68rem;
+    letter-spacing: .02em;
+    color: var(--admin-muted);
+}
+
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 8px;
+
+    border: 1px solid var(--admin-line);
+
+    font-family: "DM Mono", monospace;
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+
+    color: var(--admin-muted);
+}
+
+.admin-badge-featured {
+    background: var(--admin-text);
+    border-color: var(--admin-text);
+    color: var(--admin-surface);
+}
+
+.admin-project-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-button-danger {
+    background: transparent;
+    color: #a33;
+    border-color: #e0caca;
+}
+
+.admin-button-danger:hover {
+    background: #faf0f0;
+}
+
+.admin-empty {
+    padding: 70px 30px;
+    text-align: center;
+}
+
+.admin-empty p {
+    margin: 0 0 15px;
+    color: var(--admin-muted);
+}
+
+.admin-empty-link {
+    color: var(--admin-text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+
+/* ========================================
+   PROJECT MANAGEMENT — MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+
+    .admin-project-item {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 18px;
+    }
+
+    .admin-project-thumbnail {
+        width: 100%;
+    }
+
+    .admin-project-title {
+        flex-wrap: wrap;
+    }
+
+    .admin-project-actions {
+        width: 100%;
+    }
+
+    .admin-project-actions .admin-button,
+    .admin-project-actions form {
+        flex: 1;
+    }
+
+    .admin-project-actions form .admin-button {
+        width: 100%;
+    }
+
+}
+
+/* PROJECT FORMS */
+
+.admin-form {
+    width: 100%;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 20px;
+}
+
+.admin-form-main,
+.admin-form-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.admin-form-section {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-line);
+    padding: 28px;
+}
+
+.admin-form-label {
+    margin-bottom: 25px;
+    font-family: "DM Mono", monospace;
+    font-size: .68rem;
+    letter-spacing: .08em;
+    color: var(--admin-muted);
+}
+
+.admin-field {
+    margin-bottom: 22px;
+}
+
+.admin-field:last-child {
+    margin-bottom: 0;
+}
+
+.admin-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+.admin-field input,
+.admin-field textarea,
+.admin-field select {
+    width: 100%;
+    border: 1px solid var(--admin-line);
+    background: var(--admin-bg);
+    color: var(--admin-text);
+    padding: 13px 14px;
+    font: inherit;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .2s ease, background .2s ease;
+}
+
+.admin-field textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.admin-field input:focus,
+.admin-field textarea:focus,
+.admin-field select:focus {
+    border-color: var(--admin-accent);
+    background: var(--admin-surface);
+}
+
+.admin-field input[type="file"] {
+    padding: 10px;
+}
+
+.admin-field small {
+    display: block;
+    margin-top: 8px;
+    color: var(--admin-muted);
+    font-size: .72rem;
+    line-height: 1.5;
+}
+
+.admin-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: .85rem;
+}
+
+.admin-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--admin-text);
+}
+
+.admin-current-image {
+    margin-bottom: 20px;
+    border: 1px solid var(--admin-line);
+    background: var(--admin-bg);
+    overflow: hidden;
+}
+
+.admin-current-image img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+}
+
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.admin-alert-error {
+    background: #fff7f7;
+    border-color: #e5cccc;
+    color: #8d3333;
+}
+
+.admin-alert-error ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+}
+
+.admin-alert-error li {
+    margin-bottom: 4px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .admin-form-section {
+        padding: 20px;
+    }
+
+    .admin-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .admin-form-actions .admin-button {
+        width: 100%;
+    }
+
+}
