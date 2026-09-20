@@ -6,41 +6,52 @@
 
     <title>Admin Login — Maulana Ismaindra</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    @vite(['resources/css/admin.css', 'resources/js/app.js'])
 </head>
 
 <body>
 
-    <main class="min-h-screen flex items-center justify-center px-6">
+    <main class="admin-login-wrap">
 
-        <div class="w-full max-w-md">
+        <div class="admin-login-card">
 
-            <div class="mb-10">
-                <div class="mono text-sm mb-4">
-                    ADMIN / 01
-                </div>
+            <a href="{{ url('/') }}" class="admin-brand">
+                <span class="admin-brand-mark">MI</span>
+                <span class="admin-brand-text">Studio — Admin</span>
+            </a>
 
-                <h1 class="text-4xl font-semibold tracking-tight">
-                    Welcome back.
-                </h1>
-
-                <p class="mt-3 text-gray-500">
-                    Sign in to manage your portfolio projects.
-                </p>
+            <div class="admin-eyebrow">
+                ADMIN / 01
             </div>
 
+            <h1>
+                Welcome back.
+            </h1>
+
+            <p class="admin-login-sub">
+                Sign in to manage your portfolio projects.
+            </p>
+
             @if ($errors->any())
-                <div class="mb-6 p-4 border border-red-300 text-red-600 text-sm">
+                <div class="admin-alert admin-alert-error">
                     {{ $errors->first() }}
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.login.submit') }}" class="space-y-6">
+            <form method="POST" action="{{ route('admin.login.submit') }}" class="admin-login-form">
 
                 @csrf
 
-                <div>
-                    <label for="email" class="block text-sm font-medium mb-2">
+                <div class="admin-field">
+                    <label for="email">
                         Email
                     </label>
 
@@ -51,12 +62,11 @@
                         value="{{ old('email') }}"
                         required
                         autofocus
-                        class="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
                     >
                 </div>
 
-                <div>
-                    <label for="password" class="block text-sm font-medium mb-2">
+                <div class="admin-field">
+                    <label for="password">
                         Password
                     </label>
 
@@ -65,24 +75,21 @@
                         name="password"
                         id="password"
                         required
-                        class="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
                     >
                 </div>
 
                 <button
                     type="submit"
-                    class="w-full bg-black text-white px-4 py-3 hover:opacity-80 transition"
+                    class="admin-button admin-button-primary"
                 >
                     Sign in →
                 </button>
 
             </form>
 
-            <div class="mt-8">
-                <a href="{{ url('/') }}" class="mono text-sm hover:underline">
-                    ← Back to portfolio
-                </a>
-            </div>
+            <a href="{{ url('/') }}" class="admin-login-back">
+                ← Back to portfolio
+            </a>
 
         </div>
 

@@ -14,18 +14,18 @@
             <h1>
                 Welcome, {{ auth()->user()->name }}
             </h1>
+
+            <p class="admin-page-description">
+                {{ now()->format('l, d F Y') }} — portfolio under control.
+            </p>
         </div>
 
-        <form method="POST" action="{{ route('admin.logout') }}">
-            @csrf
-
-            <button
-                type="submit"
-                class="admin-button admin-button-secondary"
-            >
-                Logout
-            </button>
-        </form>
+        <a
+            href="{{ route('admin.projects.index') }}"
+            class="admin-button admin-button-primary"
+        >
+            Manage Projects →
+        </a>
 
     </div>
 

@@ -19,6 +19,33 @@
 
 <body>
 
+    <header class="admin-topbar">
+
+        <div class="admin-topbar-inner">
+
+            <a href="{{ route('admin.dashboard') }}" class="admin-brand">
+                <span class="admin-brand-mark">MI</span>
+                <span class="admin-brand-text">Studio — Admin</span>
+            </a>
+
+            <nav class="admin-nav">
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}">Dashboard</a>
+                <a href="{{ route('admin.projects.index') }}" class="{{ request()->routeIs('admin.projects.*') ? 'is-active' : '' }}">Projects</a>
+            </nav>
+
+            @auth
+            <form method="POST" action="{{ route('admin.logout') }}" class="admin-topbar-logout">
+                @csrf
+                <button type="submit" class="admin-button admin-button-secondary admin-button-sm">
+                    Logout
+                </button>
+            </form>
+            @endauth
+
+        </div>
+
+    </header>
+
     <main class="admin-container">
 
         @yield('content')
