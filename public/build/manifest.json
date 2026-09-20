@@ -27,6 +27,15 @@
     "file": "assets/instrument-sans-600-normal-B9e8oLYv.woff",
     "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
   },
+  "resources/css/admin.css": {
+    "file": "assets/admin-DULMrRiN.css",
+    "name": "admin",
+    "names": [
+      "admin.css"
+    ],
+    "src": "resources/css/admin.css",
+    "isEntry": true
+  },
   "resources/css/app.css": {
     "file": "assets/app-BT2FE0GD.css",
     "name": "app",
