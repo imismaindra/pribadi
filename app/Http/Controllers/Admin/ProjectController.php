@@ -200,6 +200,7 @@ class ProjectController extends Controller
         }
 
         $path = 'projects/' . Str::uuid()->toString();
+        Storage::disk('public')->makeDirectory('projects');
 
         if (function_exists('imagewebp')) {
             $path .= '.webp';
