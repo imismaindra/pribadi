@@ -31,7 +31,7 @@ class ProjectController extends Controller
             'category' => ['required', 'string', 'max:255'],
             'year' => ['nullable', 'integer', 'min:2000', 'max:2100'],
             'description' => ['required', 'string'],
-            'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'technologies' => ['nullable', 'string'],
             'github_url' => ['nullable', 'url', 'max:255'],
             'live_url' => ['nullable', 'url', 'max:255'],
@@ -50,8 +50,7 @@ class ProjectController extends Controller
         $thumbnail = null;
 
         if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail')
-                ->store('projects', 'public');
+            $thumbnail = $this->storeOptimizedThumbnail($request->file('thumbnail'));
         }
 
         Project::create([
@@ -89,7 +88,7 @@ class ProjectController extends Controller
             'category' => ['required', 'string', 'max:255'],
             'year' => ['nullable', 'integer', 'min:2000', 'max:2100'],
             'description' => ['required', 'string'],
-            'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'technologies' => ['nullable', 'string'],
             'github_url' => ['nullable', 'url', 'max:255'],
             'live_url' => ['nullable', 'url', 'max:255'],
@@ -118,8 +117,7 @@ class ProjectController extends Controller
                 Storage::disk('public')->delete($project->thumbnail);
             }
 
-            $project->thumbnail = $request->file('thumbnail')
-                ->store('projects', 'public');
+            $project->thumbnail = $this->storeOptimizedThumbnail($request->file('thumbnail'));
         }
 
         $project->update([
@@ -160,5 +158,64 @@ class ProjectController extends Controller
         return redirect()
             ->route('admin.projects.index')
             ->with('success', 'Project berhasil dihapus.');
+    }
+
+    /**
+     * Downscale + compress upload via GD so big photos never
+     * trip validation or bloat storage. Output WebP (fallback JPEG).
+     */
+    private function storeOptimizedThumbnail($file): string
+    {
+        $raw = @file_get_contents($file->getRealPath());
+        $src = $raw !== false ? @imagecreatefromstring($raw) : false;
+
+        // ponytail: GD missing/corrupt image → store original, never 500
+        if ($src === false) {
+            return $file->store('projects', 'public');
+        }
+
+        if (function_exists('exif_read_data') && in_array(strtolower($file->getClientOriginalExtension()), ['jpg', 'jpeg'], true)) {
+            $exif = @exif_read_data($file->getRealPath());
+            $orientation = $exif['Orientation'] ?? 1;
+            $src = match ($orientation) {
+                3 => imagerotate($src, 180, 0),
+                6 => imagerotate($src, -90, 0),
+                8 => imagerotate($src, 90, 0),
+                default => $src,
+            };
+        }
+
+        $width = imagesx($src);
+        $height = imagesy($src);
+        $maxSide = 1600;
+
+        if (max($width, $height) > $maxSide) {
+            $scale = $maxSide / max($width, $height);
+            $dst = imagecreatetruecolor((int) ($width * $scale), (int) ($height * $scale));
+            imagealphablending($dst, false);
+            imagesavealpha($dst, true);
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, imagesx($dst), imagesy($dst), $width, $height);
+            imagedestroy($src);
+            $src = $dst;
+        }
+
+        $path = 'projects/' . Str::uuid()->toString();
+
+        if (function_exists('imagewebp')) {
+            $path .= '.webp';
+            imagewebp($src, Storage::disk('public')->path($path), 80);
+        } else {
+            $path .= '.jpg';
+            $bg = imagecreatetruecolor(imagesx($src), imagesy($src));
+            imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+            imagecopy($bg, $src, 0, 0, 0, 0, imagesx($src), imagesy($src));
+            imagedestroy($src);
+            $src = $bg;
+            imagejpeg($src, Storage::disk('public')->path($path), 82);
+        }
+
+        imagedestroy($src);
+
+        return $path;
     }
 }

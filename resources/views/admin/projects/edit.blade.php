@@ -246,7 +246,7 @@
                         >
 
                         <small>
-                            Leave empty to keep the current image.
+                            Leave empty to keep the current image. Max 10MB, auto-compressed.
                         </small>
 
                     </div>

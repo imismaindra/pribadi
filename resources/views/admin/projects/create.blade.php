@@ -230,7 +230,7 @@
                         >
 
                         <small>
-                            JPG, PNG, or WEBP. Maximum 2MB.
+                            JPG, PNG, or WEBP up to 10MB. Auto-compressed on upload.
                         </small>
 
                     </div>
